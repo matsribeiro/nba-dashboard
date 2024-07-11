@@ -40,8 +40,11 @@ This is an interactive dashboard to analyze NBA player statistics using the nba_
 ## Code Explanation
 
 'main()': Main function that sets up the user interface using the Streamlit library.
+
 'get_player_id(player_name)': Function to fetch the ID of the selected player.
+
 'get_player_data(player_id, season)': Function to obtain the player's game data.
+
 'predict_stats(player_data)': Function to attempt predicting points, assists, and rebounds using deep learning.
 
 ## Possible Improvements
