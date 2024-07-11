@@ -1,6 +1,5 @@
 import streamlit as st
-from nba_api.stats.static import teams
-from nba_api.stats.static import players
+from nba_api.stats.static import teams, players
 from nba_api.stats.endpoints import playergamelog
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
@@ -9,7 +8,8 @@ import tensorflow as tf
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense
 
-# Função para obter o ID do jogador a partir do nome
+#função para obter o ID do jogador a partir do nome
+#add depois um filtro de jogadores por time
 def get_player_id(player_name):
     player_list = players.find_players_by_full_name(player_name)
     if player_list:
@@ -17,17 +17,17 @@ def get_player_id(player_name):
     else:
         return None
 
-# Função para obter a URL da imagem do jogador
+#função para obter a URL da imagem do jogador
 def get_player_image(player_id):
     return f"https://ak-static.cms.nba.com/wp-content/uploads/headshots/nba/latest/260x190/{player_id}.png"
 
-# Função para obter os jogos do jogador
+#função para obter os dados dos jogos do jogador
 def get_player_data(player_id, season):
     gamelog = playergamelog.PlayerGameLog(player_id=player_id, season=season)
     df = gamelog.get_data_frames()[0]
     return df
 
-# Função para tentar prever pts, ast e reb usando deep learning
+#função para tentar prever pts, ast e reb usando deep learning
 def predict_stats(player_data):
     X = player_data[['REB', 'AST']].values
     y_pts = player_data['PTS'].values
@@ -89,36 +89,38 @@ def main():
     st.title('NBA Player Stats Dashboard')
     st.sidebar.title('Seleção de Jogador')
 
-    # Seleção de jogador
+    #seleção de jogador
     selected_player = st.sidebar.selectbox('Selecione um Jogador:', [''] + [player['full_name'] for player in players.get_players()])
 
     if selected_player:
         player_id = get_player_id(selected_player)
         if player_id:
-            season = '2023-24'  # Temporada a ser analisada
+            season = '2023-24'  #temporada a ser analisada
             player_data = get_player_data(player_id, season)
             player_image_url = get_player_image(player_id)
 
-            # Calcular médias
+            #calcular médias
             mean_pts = player_data['PTS'].mean()
             mean_ast = player_data['AST'].mean()
             mean_reb = player_data['REB'].mean()
 
-            # Prever pontos, assistências e rebotes
+            #prever pontos, assistências e rebotes
             predictions = predict_stats(player_data)
 
-            # Exibir estatísticas do jogador
+            #exibir estatísticas do jogador
             st.subheader(f'Estatísticas de {selected_player}')
             
             col1, col2 = st.columns([1, 2])
             
             with col1:
                 st.image(player_image_url, caption=selected_player)
+                #exibir as previsões feita pela deep learning
                 st.subheader('Previsões')
-                st.write(f'Previsão média de pontos: {predictions["predicted_pts"]:.2f}')
-                st.write(f'Previsão média de assistências: {predictions["predicted_ast"]:.2f}')
-                st.write(f'Previsão média de rebotes: {predictions["predicted_reb"]:.2f}')
+                st.write(f'Pontos: {predictions["predicted_pts"]:.2f}')
+                st.write(f'Assistências: {predictions["predicted_ast"]:.2f}')
+                st.write(f'Rebotes: {predictions["predicted_reb"]:.2f}')
                 
+                #exibir as métricas da deep learning
                 st.subheader('Métricas do Modelo')
                 st.write(f'MSE de Pontos: {predictions["mse_pts"]:.4f}')
                 st.write(f'MAE de Pontos: {predictions["mae_pts"]:.4f}')
@@ -131,9 +133,11 @@ def main():
                 st.write(f'R² de Rebotes: {predictions["r2_reb"]:.4f}')
                 
             with col2:
-                st.write(f'Média de pontos: {mean_pts:.2f}')
-                st.write(f'Média de assistências: {mean_ast:.2f}')
-                st.write(f'Média de rebotes: {mean_reb:.2f}')
+                #exibir as média do jogador na temporada
+                st.subheader('Médias')
+                st.write(f'Pontos: {mean_pts:.2f}')
+                st.write(f'Assistências: {mean_ast:.2f}')
+                st.write(f'Rebotes: {mean_reb:.2f}')
                 
             st.write(player_data)
 
