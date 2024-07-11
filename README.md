@@ -23,7 +23,8 @@ Este é um dashboard para analisar estatísticas de jogadores da NBA usando as b
 
 ## Melhorias Possíveis
 
-Adicionar Filtro de Time: Permitir que os usuários filtrem as estatísticas por time.
+Adicionar Filtro de Time: Permitir que os usuários filtrem as estatísticas por time.  
+
 Aprimorar Métricas de Aprendizado Profundo: Integrar modelos de machine learning para previsão e análise mais aprofundada das estatísticas dos jogadores.
 
 ## English
@@ -49,5 +50,6 @@ This is an interactive dashboard to analyze NBA player statistics using the nba_
 
 ## Possible Improvements
 
-Add Team Filter: Allow users to filter statistics by team.
+Add Team Filter: Allow users to filter statistics by team.  
+
 Improve Deep Learning Metrics: Integrate machine learning models for more in-depth analysis and prediction of player statistics.
