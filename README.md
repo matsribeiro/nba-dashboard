@@ -13,10 +13,13 @@ Este é um dashboard para analisar estatísticas de jogadores da NBA usando as b
 
 ## Explicação do Código
 
-'main()' = Função principal que configura a interface do usuário utilizando a biblioteca StreamLit.
-'get_player_id(player_name)': Função para pegar o ID do jogador selecionado.
-'get_player_data(player_id, season)': Função para obter os dados dos jogos do jogador.
-'predict_stats(player_data)': Função para tentar prever pts, ast e reb usando deep learning.
+'main()' = Função principal que configura a interface do usuário utilizando a biblioteca StreamLit.  
+
+'get_player_id(player_name)': Função para pegar o ID do jogador selecionado.  
+
+'get_player_data(player_id, season)': Função para obter os dados dos jogos do jogador.  
+
+'predict_stats(player_data)': Função para tentar prever pts, ast e reb usando deep learning.  
 
 ## Melhorias Possíveis
 
